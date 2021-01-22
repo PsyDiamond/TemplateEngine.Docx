@@ -11,13 +11,13 @@ namespace TemplateEngine.Docx
 	{
 		protected Container()
 		{
-
                 Repeats = new List<RepeatContent>();
                 Lists = new List<ListContent>();
 				Tables = new List<TableContent>();
 				Fields = new List<FieldContent>();
 				Images = new List<ImageContent>();
-            
+				DeleteFields = new List<FieldDeleteContent>();
+				DeleteTables = new List<TableDeleteContent>();
 		}
 		protected Container(params IContentItem[] contentItems)
 		{
@@ -28,7 +28,9 @@ namespace TemplateEngine.Docx
 				Tables = contentItems.OfType<TableContent>().ToList();
 				Fields = contentItems.OfType<FieldContent>().ToList();
                 Images = contentItems.OfType<ImageContent>().ToList();
-            }
+				DeleteFields = contentItems.OfType<FieldDeleteContent>().ToList();
+				DeleteTables = contentItems.OfType<TableDeleteContent>().ToList();
+			}
 		}
 
 		protected IEnumerable<IContentItem> All
@@ -42,8 +44,10 @@ namespace TemplateEngine.Docx
 				if (Lists != null) result = result.Concat(Lists).ToList();
 				if (Fields != null) result = result.Concat(Fields).ToList();
                 if (Images != null) result = result.Concat(Images).ToList();
+				if (DeleteFields != null) result = result.Concat(DeleteFields).ToList();
+				if (DeleteTables != null) result = result.Concat(DeleteTables).ToList();
 
-                return result;
+				return result;
 			}
 		}
 
@@ -57,11 +61,15 @@ namespace TemplateEngine.Docx
 
 		public ICollection<ImageContent> Images { get; set; }
 
-		
-        public IContentItem GetContentItem(string name)
+		public ICollection<FieldDeleteContent> DeleteFields { get; set; }
+		public ICollection<TableDeleteContent> DeleteTables { get; set; }
+
+
+		public IContentItem GetContentItem(string name)
         {
 	        return All.FirstOrDefault(t => t.Name == name);
         }
+
 		[JsonIgnore]
 		public IEnumerable<string> FieldNames
 		{
