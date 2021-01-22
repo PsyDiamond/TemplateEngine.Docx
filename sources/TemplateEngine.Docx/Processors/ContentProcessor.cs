@@ -18,7 +18,9 @@ namespace TemplateEngine.Docx.Processors
                 new RepeatProcessor(context),
                 new TableProcessor(context),
 				new ListProcessor(context),
-                new ImagesProcessor(context)
+                new ImagesProcessor(context),
+				new TableDeleteProcessor(),
+				new FieldsDeleteProcessor()
 			};
 		}
 
