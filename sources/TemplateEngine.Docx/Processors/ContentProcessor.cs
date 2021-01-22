@@ -101,7 +101,21 @@ namespace TemplateEngine.Docx.Processors
 
 		public ProcessResult FillContent(XElement content, Content data)
 		{
-			return FillContent(content, data.AsEnumerable());
+			var result = FillContent(content, data.AsEnumerable());
+			var paragraphDeliters = data.DeleteParagraphs;
+			if (paragraphDeliters != 0)
+			{
+				var processedItems = new List<IContentItem>();
+				var paragraphDelProc = new ParagraphDeleteProcessor();
+				for (int i = 0; i < paragraphDeliters; ++i)
+				{
+					var processorResult = paragraphDelProc.DeleteContent(content);
+					processedItems.AddRange(processorResult.HandledItems);
+					result.Merge(processorResult);
+				}
+			}
+
+			return result;
 		}
 
 		public ProcessResult FillContent(XElement content, IContentItem data)
