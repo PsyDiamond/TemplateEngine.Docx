@@ -64,6 +64,7 @@ namespace TemplateEngine.Docx
 		public ICollection<FieldDeleteContent> DeleteFields { get; set; }
 		public ICollection<TableDeleteContent> DeleteTables { get; set; }
 
+		public int DeleteParagraphs { get; set; }
 
 		public IContentItem GetContentItem(string name)
         {
